@@ -2,7 +2,7 @@
 use \App\Http\Response;
 use \App\Controller\Pages;
 
-use \App\Db\Database;
+
 
 //ROTA HOME
 $obRouter->get('/', [
