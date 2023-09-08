@@ -1,10 +1,11 @@
-<?php 
+<?php
 
 namespace App\Model\Entity;
 
 use App\Db\Database;
 
-class Testimony{
+class Testimony
+{
   /**
    * ID do depoimento
    * @var integer
@@ -33,7 +34,8 @@ class Testimony{
    * Método responsável por cadastrar a instância atual no banco de dados
    * @return boolean
    */
-  public function cadastrar() {
+  public function cadastrar()
+  {
     //DEFINE A DATA
     $this->data = date('Y-m-d H:i:s');
 
@@ -43,9 +45,44 @@ class Testimony{
       'mensagem' => $this->mensagem,
       'data' => $this->data
     ]);
-    
+
     //SUCESSO
     return true;
+  }
+
+  /**
+   * Método responsável por atualizar os dado do banco com a instancia atual
+   * @return boolean
+   */
+  public function atualizar()
+  {
+
+    //ATUALIZA O DEPOIMENTO NO BANCO DE DADOS
+    return (new Database('depoimentos'))->update('id = ' . $this->id, [
+      'nome' => $this->nome,
+      'mensagem' => $this->mensagem,
+    ]);
+  }
+
+  /**
+   * Método responsável por excluir um depomiento do banco de dados
+   * @return boolean
+   */
+  public function excluir()
+  {
+
+    //EXCLUI O DEPOIMENTO NO BANCO DE DADOS
+    return (new Database('depoimentos'))->delete('id = ' . $this->id, []);
+  }
+
+  /**
+   * Método responsável por retornar um depoimento com base no seu id
+   * @param integer $id
+   * @return Testimony
+   */
+  public static function getTestimonyById($id)
+  {
+    return self::getTestimonies('id = ' . $id)->fetchObject(self::class);
   }
 
   /**
@@ -56,10 +93,8 @@ class Testimony{
    * @param string $fields
    * @return PDOStatement
    */
-  public static function getTestimonies($where = null, $order= null, $limit = null, $fields = '*') {
-    return (new Database('depoimentos'))->select($where,$order,$limit, $fields);
+  public static function getTestimonies($where = null, $order = null, $limit = null, $fields = '*')
+  {
+    return (new Database('depoimentos'))->select($where, $order, $limit, $fields);
   }
 }
-
-
-?>
